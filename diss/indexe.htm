@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Abstract</title>
+  <link rel="stylesheet" href="../master_style.css">
+
+  <!-- KaTeX integration -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+      onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});">
+  </script>
+
+</head>
+<body>
+  <header>
+    <h1>Abstract of the Master's Thesis</h1>
+    <a class="lang-switch" href="./index.htm" title="Russian version">
+      <img src="../assets/ru.png" alt="RU">
+    </a>
+  </header>
+
+  <main>
+    <nav>
+      <div class="logo">
+        <a href="../indexe.htm"><img src="../assets/logo.png" alt="Logo"></a>
+        <p><strong>Main Menu</strong></p>
+      </div>
+      <a href="../indexe.htm">Biography</a>
+      <a href="../contacts/privatee.htm">Resume</a>
+      <a href="../diss/indexe.htm">Abstract</a>
+    </nav>
+
+    <section>
+      <article>
+        <div class="notice">
+          ⚠️ <b>Note:</b> The master's thesis is in progress. Some data and formulations may be updated as the research is completed.
+        </div>
+
+        <p><b>Author:</b> Diana Alexandrovna Kachura</p>
+        <p><b>Advisor:</b> Natalia Yurievna Dobrovolskaya</p>
+        <p><b>Title:</b> Assessment of Wear and Lifetime Prediction of Concrete Infrastructure Elements Based on Image Analysis and Regression Neural Network Methods</p>
+
+        <h2>Contents</h2>
+        <ol>
+          <li><a href="#introduction">Introduction</a></li>
+          <li>Materials and Methods
+            <ol>
+              <li><a href="#data_collection">2.1 Data Collection and Preparation</a></li>
+              <li><a href="#transformer">2.2 Visual Transformers for Image Analysis</a></li>
+              <li><a href="#regression">2.3 Regression Neural Network for Prediction</a></li>
+              <li><a href="#processing">2.4 Data Processing and Analysis</a></li>
+            </ol>
+          </li>
+          <li><a href="#results">Results</a></li>
+          <li><a href="#conclusions">Conclusions</a></li>
+          <li><a href="#references">References</a></li>
+        </ol>
+
+        <h2 id="introduction">Introduction</h2>
+        <p>Modern concrete structures require regular condition monitoring to prevent failures and improve infrastructure reliability. Traditional visual inspection methods are limited by subjectivity and labor intensity. Applying deep learning and image analysis methods improves the accuracy of diagnostics and prediction of the remaining service life of elements. This study examines the use of Visual Transformers to extract features from images and train a regression neural network to predict the remaining service life of concrete elements.</p>
+
+        <h2>2. Materials and Methods</h2>
+
+        <h3 id="data_collection">2.1 Data Collection and Preparation</h3>
+        <p>The database included over 50,000 images of concrete elements with various types of wear. Images were normalized and augmented to improve model generalization.</p>
+        <p>Principal Component Analysis (PCA) was applied to reduce feature dimensionality:</p>
+        <p>$$Z = X W_{PCA}, \quad Z \in \mathbb{R}^{N \times d}$$</p>
+        <p>where $X$ is the original feature matrix, $W_{PCA}$ is the principal component matrix, and $d$ is the chosen dimension.</p>
+
+        <h3 id="transformer">2.2 Visual Transformers for Image Analysis</h3>
+        <p>Visual Transformers extract spatial dependencies and complex wear patterns. The main processing steps:</p>
+        <ul>
+          <li>Feature maps are extracted from images: $X \in \mathbb{R}^{H \times W \times C}$</li>
+          <li>Feature maps are converted into visual tokens: $$T = (\text{softmax}(X W_A^T))^T (X W_V), \quad T \in \mathbb{R}^{L \times C_T}$$</li>
+          <li>Tokens pass through the transformer to compute relationships between features: $$T_{\text{out}} = T_{\text{in}} + \text{Attention}(T_{\text{in}})$$</li>
+          <li>Token aggregation with feature maps improves defect localization.</li>
+        </ul>
+        <figure>
+          <img src="./images/visual_transformer.png" alt="Visual Transformer">
+          <figcaption>Figure 1. Visual Transformer workflow with feature maps and visual tokens aggregation</figcaption>
+        </figure>
+
+        <h3 id="regression">2.3 Regression Neural Network for Prediction</h3>
+        <p>A regression neural network was trained on the extracted features:</p>
+        <p>$$Y_{\text{pred}} = f_{\theta}(T_{\text{features}}) + \varepsilon$$</p>
+        <p>where $T_{\text{features}}$ are features aggregated from tokens and feature maps, $\theta$ are model parameters, and $\varepsilon$ is prediction error. The network consisted of three fully connected layers with ReLU and a linear output layer.</p>
+        <figure>
+          <img src="./images/regression_nn.png" alt="Regression Neural Network">
+          <figcaption>Figure 2. Regression neural network architecture for predicting remaining service life</figcaption>
+        </figure>
+
+        <h3 id="processing">2.4 Data Processing and Analysis</h3>
+        <p>PCA was applied for preliminary analysis of surface features of concrete elements, reducing dimensionality and visualizing main patterns:</p>
+        <p>$$T_{\text{PCA}} = T \cdot W_{\text{proj}}$$</p>
+        <figure style="text-align:center; margin: 2em 0;">
+          <img src="./images/pca_visualization.png" alt="PCA Visualization" style="max-width:80%;">
+          <figcaption>Figure 3. Visualization of concrete surface features after PCA</figcaption>
+        </figure>
+        <p>PCA allowed identification of major feature variations and clustering of defects such as cracks and corrosion, facilitating subsequent regression modeling.</p>
+        <p>Oversampling and loss weighting were applied to balance the dataset and reduce class imbalance, ensuring uniform model training and preventing prediction bias. These preprocessing steps provided a reliable foundation for training the regression neural network and improving prediction accuracy.</p>
+
+        <h2 id="results">Results</h2>
+        <p>The study demonstrated high efficiency of Visual Transformers for analyzing concrete element images. These models detect complex spatial wear patterns missed by classical convolutional networks. Defect detection accuracy exceeded 92% on the test set, confirming reliability and practical applicability.</p>
+        <p>The regression neural network built on combined token and feature map information achieved a prediction error of 7–9%, which is acceptable for engineering monitoring tasks. Integrating multiple feature sources improved defect localization and prediction quality.</p>
+        <p>Thus, the proposed image analysis and service life prediction method is an effective tool for automated infrastructure monitoring, enabling early defect detection and precise maintenance planning, increasing safety and reliability of structures.</p>
+
+        <h2 id="conclusions">Conclusions</h2>
+        <ol>
+          <li>Visual Transformers are effective for concrete image analysis, highlighting complex spatial features.</li>
+          <li>Regression neural networks using tokens and feature maps allow accurate prediction of remaining service life.</li>
+          <li>The proposed method can be applied for automated infrastructure monitoring and preventive maintenance planning.</li>
+        </ol>
+
+        <h2 id="references">References</h2>
+<ol>
+  <li>Иванов И.И. Методы анализа данных. — Краснодар, 2025.</li>
+  <li>Дополнительные источники по машинному обучению и компьютерному зрению.</li>
+  <li>Габриель Кабас, "Summer Course ML: Histology tissue classification", GitHub, 2024.</li>
+  <li>Введение в Visual Transformers [Электронный ресурс]. – URL: https://arxiv.org/abs/2012.12877 (дата обращения: 01.01.2025).</li>
+  <li>Основы регрессии в нейросетях [Электронный ресурс]. – URL: https://ml-cheatsheet.ru/regression-neural-network/ (дата обращения: 01.01.2025).</li>
+  <li>Методы анализа изображений для инженерных объектов [Электронный ресурс]. – URL: https://www.sciencedirect.com/topics/engineering/image-analysis (дата обращения: 01.01.2025).</li>
+  <li>Deep Residual Learning for Image Recognition [Электронный ресурс]. – URL: https://arxiv.org/abs/1512.03385 (дата обращения: 20.12.2024).</li>
+  <li>Метод распознавания сложных объектов на снимках микробиологических препаратов [Электронный ресурс]. – URL: https://cyberleninka.ru/article/n/metod-raspoznavaniya-slozhnyh-obektov-na-snimkah-mikrobiologicheskih-preparatov/viewer (дата обращения: 20.12.2024).</li>
+  <li>Оптическая когерентная томография и флюоресцентная диагностика при заболеваниях мочевого пузыря [Электронный ресурс]. – URL: https://cyberleninka.ru/article/n/opticheskaya-kogerentnaya-tomografiya-i-flyuorestsentnaya-diagnostika-pri-zabolevaniyah-mochevogo-puzyrya/viewer (дата обращения: 21.12.2024).</li>
+  <li>Применение искусственного интеллекта в видеокапсульной эндоскопии [Электронный ресурс]. – URL: https://cyberleninka.ru/article/n/primenenie-iskusstvennogo-intellekta-v-videokapsulnoy-endoskopii/viewer (дата обращения: 22.12.2024).</li>
+  <li>Применение методов интерпретации нейронных сетей для анализа гистологических изображений патологических процессов молочной железы [Электронный ресурс]. – URL: https://gynecology.orscience.ru/2079-5831/article/view/112544/pdf (дата обращения: 25.12.2024).</li>
+  <li>Unsupervised Feature Matching for Affine Histological Image Registration [Электронный ресурс]. – URL: https://istina.msu.ru/publications/article/716102799/ (дата обращения: 01.01.2025).</li>
+  <li>Сегментация опухолей на полнослайдовых гистологических изображениях с использованием технологии глубокого обучения [Электронный ресурс]. – URL: https://www.researchgate.net/publication/344237387_Segmentacia_opuholej_na_polnoslajdovyh_gistologiceskih_izobrazeniah_s_ispolzovaniem_tehnologii_glubokogo_obucenia_Tumor_segmentation_in_whole-slide_histology_images_using_deep_learning (дата обращения: 25.12.2024).</li>
+  <li>Информированная сегментация гистологических изображений для улучшения точности определения индекса Ki-67 [Электронный ресурс]. – URL: http://www.jip.ru/2024/225-236-2024.pdf (дата обращения: 01.01.2025).</li>
+  <li>Проектирование экспресс-анализатора для определения патоморфологических изменений тканей животных [Электронный ресурс]. – URL: https://rusapk.sursau.ru/upload/iblock/89d/d5iidm9u9t1379m8jxc50pi6k1j6gon8/279-288.pdf (дата обращения: 01.01.2025).</li>
+  <li>Neural network model development for detecting atypical mitoses in histological slides [Электронный ресурс]. – URL: https://journals.eco-vector.com/0869-8678/article/view/626361/159222 (дата обращения: 03.01.2025).</li>
+  <li>Scalable deep learning artificial intelligence histopathology slide analysis and validation [Электронный ресурс]. – URL: https://www.nature.com/articles/s41598-024-76807-x (дата обращения: 04.01.2025).</li>
+  <li>Machine learning methods for histopathological image analysis: Updates in 2024 [Электронный ресурс]. – URL: https://www.sciencedirect.com/science/article/pii/S2001037024004549 (дата обращения: 10.01.2025).</li>
+  <li>Deceptive learning in histopathology [Электронный ресурс]. – URL: https://onlinelibrary.wiley.com/doi/10.1111/his.15180 (дата обращения: 11.01.2025).</li>
+  <li>Нейронные сети в медицине: современные подходы и перспективы [Электронный ресурс]. – URL: https://cyberleninka.ru/article/n/neyronnye-seti-v-meditsine-sovremennye-podhody-i-perspektivy (дата обращения: 11.01.2025).</li>
+  <li>Применение предварительно обученных нейронных сетей для решения задачи обратного поиска рентгеновских изображений запрещенных предметов и веществ [Электронный ресурс]. – URL: https://cyberleninka.ru/article/n/primenenie-predvaritelno-obuchennyh-neyronnyh-setey-dlya-resheniya-zadachi-obratnogo-poiska-rentgenovskih-izobrazheniy (дата обращения: 11.01.2025).</li>
+  <li>Нейросетевой анализ цифровых изображений лейкоцитов для обнаружения заболеваний крови [Электронный ресурс]. – URL: https://cyberleninka.ru/article/n/neyrosetevoy-analiz-tsifrovyh-izobrazheniy-leykotsitov-dlya-obnaruzheniya-zabolevaniy-krovi (дата обращения: 11.01.2025).</li>
+  <li>Goodfellow I., Bengio Y., Courville A. Deep Learning. — MIT Press, 2016.</li>
+  <li>He K., Zhang X., Ren S., Sun J. Deep Residual Learning for Image Recognition. — CVPR, 2016.</li>
+  <li>Ronneberger O., Fischer P., Brox T. U-Net: Convolutional Networks for Biomedical Image Segmentation. — MICCAI, 2015.</li>
+  <li>Litjens G., et al. A survey on deep learning in medical image analysis. — Medical Image Analysis, 2017.</li>
+  <li>Shen D., Wu G., Suk H.I. Deep Learning in Medical Image Analysis. — Annual Review of Biomedical Engineering, 2017.</li>
+  <li>Esteva A., et al. Dermatologist-level classification of skin cancer with deep neural networks. — Nature, 2017.</li>
+  <li>LeCun Y., Bengio Y., Hinton G. Deep learning. — Nature, 2015.</li>
+  <li>Simonyan K., Zisserman A. Very Deep Convolutional Networks for Large-Scale Image Recognition. — ICLR, 2015.</li>
+  <li>Krizhevsky A., Sutskever I., Hinton G.E. ImageNet Classification with Deep Convolutional Neural Networks. — NIPS, 2012.</li>
+  <li>Dosovitskiy A., et al. An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale. — ICLR, 2021.</li>
+  <li>Touvron H., et al. Training data-efficient image transformers & distillation through attention. — ICML, 2021.</li>
+  <li>Chen T., Kornblith S., Norouzi M., Hinton G. A Simple Framework for Contrastive Learning of Visual Representations. — ICML, 2020.</li>
+  <li>Huang G., et al. Densely Connected Convolutional Networks. — CVPR, 2017.</li>
+  <li>Li X., et al. Neural Architecture Search for Medical Image Segmentation. — Medical Image Analysis, 2020.</li>
+  <li>Zhou Z., et al. UNet++: A Nested U-Net Architecture for Medical Image Segmentation. — Deep Learning in Medical Image Analysis, 2018.</li>
+  <li>Raghu M., et al. Transfusion: Understanding Transfer Learning for Medical Imaging. — NeurIPS, 2019.</li>
+  <li>Wang S., et al. Multi-scale deep learning for structural defect detection. [Электронный ресурс]. – URL: https://www.sciencedirect.com/science/article/pii/S2352711020301234 (дата обращения: 05.01.2025).</li>
+<li>Yang X., et al. Automated histopathology image analysis using convolutional neural networks. [Электронный ресурс]. – URL: https://www.sciencedirect.com/science/article/pii/S1361841519300456 (дата обращения: 06.01.2025).</li>
+<li>Chen L., et al. Deep learning-based pavement distress detection and classification. [Электронный ресурс]. – URL: https://www.mdpi.com/2076-3417/9/11/2271 (дата обращения: 07.01.2025).</li>
+
+</ol>
+
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    © D.A. Kachura, 2025
+  </footer>
+</body>
+</html>
